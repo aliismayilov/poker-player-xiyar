@@ -13,7 +13,8 @@ class Player
   def bet_request
     return all_in_bet if flush? || three_of_a_rank? || double_pair?
     return minimum_bet + available_for_raise / rank_to_value[ranks(hole_cards).first] if pair?
-    return 0 if current_buy_in_is_too_sure?
+    return 0 unless have_high?
+    return 0 if one_of_the_players_is_too_sure?
     minimum_bet + 1
   end
 
@@ -21,6 +22,13 @@ class Player
   end
 
   private
+
+  def have_high?
+    hole_cards
+      .any? do |card|
+        ['A', 'K'].include?(card['rank'])
+      end
+  end
 
   def all_in_bet
     minimum_bet + available_for_raise
@@ -36,8 +44,10 @@ class Player
       end
   end
 
-  def current_buy_in_is_too_sure?
-    my_stack / game_state['current_buy_in'] < 2.5
+  def one_of_the_players_is_too_sure?
+    other_players.any? do |player|
+      player['bet'].to_i > player['stack'].to_i
+    end
   end
 
   def available_for_raise
@@ -105,8 +115,14 @@ class Player
 
   def my_player
     game_state['players'].select do |player|
-      player['hole_cards']
+      player['hole_cards'] && player['hole_cards'].any?
     end.first
+  end
+
+  def other_players
+    game_state['players'].reject do |player|
+      player['hole_cards'] && player['hole_cards'].any?
+    end
   end
 
   def my_stack

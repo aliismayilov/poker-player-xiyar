@@ -37,6 +37,16 @@ RSpec.describe Player do
       }
     ]
   end
+  let(:another_player) do
+    {
+      "id": 2,
+      "name": "Chuck",
+      "status": "out",
+      "version": "Default random player",
+      "stack": 0,
+      "bet": 0
+    }
+  end
 
   let(:game_state) do
     {
@@ -69,21 +79,42 @@ RSpec.describe Player do
           "bet": 80,
           "hole_cards": hole_cards
         },
-        {
-          "id": 2,
-          "name": "Chuck",
-          "status": "out",
-          "version": "Default random player",
-          "stack": 0,
-          "bet": 0
-        }
+        another_player
       ],
       "community_cards": community_cards
     }.to_json
   end
 
-  context 'opponent is too sure' do
-    let(:current_buy_in) { 1000 }
+  context 'no high card' do
+    let(:hole_cards) do
+      [
+        {
+          "rank": "6",
+          "suit": "hearts"
+        },
+        {
+          "rank": "10",
+          "suit": "spades"
+        }
+      ]
+    end
+
+    it 'folds' do
+      expect(player.bet_request).to eql 0
+    end
+  end
+
+  context 'another player is too sure' do
+    let(:another_player) do
+      {
+        "id": 2,
+        "name": "Chuck",
+        "status": "out",
+        "version": "Default random player",
+        "stack": 100,
+        "bet": 500
+      }
+    end
 
     it 'folds' do
       expect(player.bet_request).to eql 0
