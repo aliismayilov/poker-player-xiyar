@@ -53,7 +53,7 @@ class Player
 
   def one_of_the_players_is_too_sure?
     other_players.any? do |player|
-      player['bet'].to_i > player['stack'].to_i
+      player['bet'].to_i > player['stack'].to_i / 1.8
     end
   end
 
