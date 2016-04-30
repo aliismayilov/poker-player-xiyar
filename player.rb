@@ -13,16 +13,20 @@ class Player
   def bet_request
     return all_in_bet if flush? || three_of_a_rank? || double_pair?
     return minimum_bet + available_for_raise / rank_to_value[ranks(hole_cards).first] if pair?
-    return minimum_bet if going_for_flush?
+    return call_player if going_for_flush?
     return 0 if one_of_the_players_is_too_sure?
     return 0 unless have_high?
-    minimum_bet
+    call_player
   end
 
   def showdown
   end
 
   private
+
+  def call_player
+    game_state['current_buy_in'] - game_state['players'][game_state['in_action']]['bet']
+  end
 
   def going_for_flush?
     hole_cards.map do |card|
@@ -94,7 +98,7 @@ class Player
   end
 
   def minimum_bet
-    game_state['current_buy_in'] - game_state['players'][game_state['in_action']]['bet'] + game_state['minimum_raise']
+    call_player + game_state['minimum_raise']
   end
 
   def double_pair?
