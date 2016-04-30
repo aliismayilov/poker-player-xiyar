@@ -11,7 +11,11 @@ class Player
   end
 
   def bet_request
-    minimum_possible_raise
+    if game_state['current_buy_in'] < 400
+      minimum_possible_raise
+    else
+      0
+    end
   end
 
   def showdown

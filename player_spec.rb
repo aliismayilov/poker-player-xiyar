@@ -8,6 +8,8 @@ RSpec.describe Player do
 
   subject(:player) { Player.new(game_state) }
 
+  let(:current_buy_in) { 100 }
+
   let(:game_state) do
     {
       "tournament_id": "550d1d68cd7bd10003000003",
@@ -15,7 +17,7 @@ RSpec.describe Player do
       "round": 0,
       "bet_index": 0,
       "small_blind": 10,
-      "current_buy_in": 320,
+      "current_buy_in": current_buy_in,
       "pot": 400,
       "minimum_raise": 240,
       "dealer": 1,
@@ -74,9 +76,17 @@ RSpec.describe Player do
     }.to_json
   end
 
-  describe '#minimum_possible_raise' do
+  context 'opponent is not sure' do
     it do
-      expect(player.minimum_possible_raise).to eql 481
+      expect(player.bet_request).to eql 261
+    end
+  end
+
+  context 'opponent is too agressive' do
+    let(:current_buy_in) { 400 }
+
+    it 'folds' do
+      expect(player.bet_request).to eql 0
     end
   end
 end
