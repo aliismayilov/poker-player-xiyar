@@ -82,13 +82,7 @@ RSpec.describe Player do
     }.to_json
   end
 
-  context 'opponent is not sure' do
-    it do
-      expect(player.bet_request).to eql 262
-    end
-  end
-
-  context 'opponent is too agressive' do
+  context 'opponent is too sure' do
     let(:current_buy_in) { 400 }
 
     it 'folds' do
@@ -101,11 +95,11 @@ RSpec.describe Player do
       let(:hole_cards) do
         [
           {
-            "rank": "4",
+            "rank": "3",
             "suit": "hearts"
           },
           {
-            "rank": "4",
+            "rank": "3",
             "suit": "spades"
           }
         ]
@@ -135,33 +129,16 @@ RSpec.describe Player do
       end
     end
 
-    context '2 pairs' do
+    context 'double' do
       let(:hole_cards) do
         [
           {
-            "rank": "3",
-            "suit": "hearts"
-          },
-          {
-            "rank": "4",
-            "suit": "spades"
-          }
-        ]
-      end
-
-      let(:community_cards) do
-        [
-          {
-            "rank": "4",
-            "suit": "spades"
-          },
-          {
-            "rank": "3",
-            "suit": "hearts"
-          },
-          {
             "rank": "6",
-            "suit": "clubs"
+            "suit": "hearts"
+          },
+          {
+            "rank": "4",
+            "suit": "spades"
           }
         ]
       end
@@ -169,6 +146,25 @@ RSpec.describe Player do
       it 'raises 1500 more than the minimum_possible_raise' do
         expect(player.bet_request).to eql 1761
       end
+    end
+  end
+
+  context 'has 3 of a rank' do
+    let(:hole_cards) do
+      [
+        {
+          "rank": "6",
+          "suit": "hearts"
+        },
+        {
+          "rank": "6",
+          "suit": "spades"
+        }
+      ]
+    end
+
+    it 'raises 2000 more than the minimum_possible_raise' do
+      expect(player.bet_request).to eql 2261
     end
   end
 end
