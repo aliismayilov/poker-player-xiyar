@@ -21,6 +21,22 @@ RSpec.describe Player do
       }
     ]
   end
+  let(:community_cards) do
+    [
+      {
+        "rank": "4",
+        "suit": "spades"
+      },
+      {
+        "rank": "A",
+        "suit": "hearts"
+      },
+      {
+        "rank": "6",
+        "suit": "clubs"
+      }
+    ]
+  end
 
   let(:game_state) do
     {
@@ -62,20 +78,7 @@ RSpec.describe Player do
           "bet": 0
         }
       ],
-      "community_cards": [
-        {
-          "rank": "4",
-          "suit": "spades"
-        },
-        {
-          "rank": "A",
-          "suit": "hearts"
-        },
-        {
-          "rank": "6",
-          "suit": "clubs"
-        }
-      ]
+      "community_cards": community_cards
     }.to_json
   end
 
@@ -129,6 +132,42 @@ RSpec.describe Player do
 
       it 'raises 100 more than minimum_possible_raise' do
         expect(player.bet_request).to eql 1261
+      end
+    end
+
+    context '2 pairs' do
+      let(:hole_cards) do
+        [
+          {
+            "rank": "3",
+            "suit": "hearts"
+          },
+          {
+            "rank": "4",
+            "suit": "spades"
+          }
+        ]
+      end
+
+      let(:community_cards) do
+        [
+          {
+            "rank": "4",
+            "suit": "spades"
+          },
+          {
+            "rank": "3",
+            "suit": "hearts"
+          },
+          {
+            "rank": "6",
+            "suit": "clubs"
+          }
+        ]
+      end
+
+      it 'raises 1500 more than the minimum_possible_raise' do
+        expect(player.bet_request).to eql 1761
       end
     end
   end

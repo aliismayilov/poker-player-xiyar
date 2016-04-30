@@ -11,7 +11,8 @@ class Player
   end
 
   def bet_request
-    return minimum_possible_raise + rank_to_value[ranks.first] if have_pair?
+    return minimum_possible_raise + 1500 if have_double_pair?
+    return minimum_possible_raise + rank_to_value[ranks(hole_cards).first] if have_pair?
     return 0 if game_state['current_buy_in'] >= 400
     minimum_possible_raise + 1
   end
@@ -43,8 +44,13 @@ class Player
     game_state['current_buy_in'] - game_state['players'][game_state['in_action']]['bet'] + game_state['minimum_raise'] + 1
   end
 
+  def have_double_pair?
+    all_ranks = ranks(hole_cards) + ranks(community_cards)
+    all_ranks.select { |e| all_ranks.count(e) > 1 }.uniq.count > 1
+  end
+
   def have_pair?
-    ranks.uniq.count == 1
+    ranks(hole_cards).uniq.count == 1
   end
 
   def hole_cards
@@ -53,8 +59,13 @@ class Player
     end.first['hole_cards']
   end
 
-  def ranks
-    hole_cards.map do |card|
+  def community_cards
+    game_state['community_cards'] || []
+  end
+
+  def ranks(cards)
+    return [] if cards.empty?
+    cards.map do |card|
       card['rank']
     end
   end
