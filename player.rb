@@ -12,10 +12,10 @@ class Player
 
   def bet_request
     return available_for_raise / 1 if three_of_a_rank?
-    return minimum_possible_raise + available_for_raise / 1 if double_pair?
-    return minimum_possible_raise + available_for_raise / rank_to_value[ranks(hole_cards).first] if pair?
+    return minimum_bet + available_for_raise / 1 if double_pair?
+    return minimum_bet + available_for_raise / rank_to_value[ranks(hole_cards).first] if pair?
     return 0 if game_state['current_buy_in'] >= 400
-    minimum_possible_raise + 1
+    minimum_bet + 1
   end
 
   def showdown
@@ -24,7 +24,7 @@ class Player
   private
 
   def available_for_raise
-    my_stack - minimum_possible_raise
+    my_stack - minimum_bet
   end
 
   def rank_to_value
@@ -55,7 +55,7 @@ class Player
     end
   end
 
-  def minimum_possible_raise
+  def minimum_bet
     game_state['current_buy_in'] - game_state['players'][game_state['in_action']]['bet'] + game_state['minimum_raise'] + 1
   end
 
