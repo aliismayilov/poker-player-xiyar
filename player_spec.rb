@@ -164,7 +164,42 @@ RSpec.describe Player do
     end
 
     it 'raises 2000 more than the minimum_possible_raise' do
-      expect(player.bet_request).to eql 1329
+      expect(player.bet_request).to eql 1590
+    end
+  end
+
+  context 'has flush' do
+    let(:hole_cards) do
+      [
+        {
+          "rank": "6",
+          "suit": "clubs"
+        },
+        {
+          "rank": "K",
+          "suit": "clubs"
+        }
+      ]
+    end
+    let(:community_cards) do
+      [
+        {
+          "rank": "4",
+          "suit": "clubs"
+        },
+        {
+          "rank": "A",
+          "suit": "clubs"
+        },
+        {
+          "rank": "6",
+          "suit": "clubs"
+        }
+      ]
+    end
+
+    it 'raises 2000 more than the minimum_possible_raise' do
+      expect(player.bet_request).to eql 1590
     end
   end
 end

@@ -11,8 +11,7 @@ class Player
   end
 
   def bet_request
-    return available_for_raise / 1 if three_of_a_rank?
-    return minimum_bet + available_for_raise / 1 if double_pair?
+    return all_in_bet if flush? || three_of_a_rank? || double_pair?
     return minimum_bet + available_for_raise / rank_to_value[ranks(hole_cards).first] if pair?
     return 0 if current_buy_in_is_too_sure?
     minimum_bet + 1
@@ -22,6 +21,20 @@ class Player
   end
 
   private
+
+  def all_in_bet
+    minimum_bet + available_for_raise
+  end
+
+  def flush?
+    all_cards
+      .group_by do |card|
+        card['suit']
+      end
+      .any? do |suit, cards|
+        cards.count > 4
+      end
+  end
 
   def current_buy_in_is_too_sure?
     my_stack / game_state['current_buy_in'] < 2.5
@@ -51,6 +64,10 @@ class Player
 
   def all_ranks
     ranks(hole_cards) + ranks(community_cards)
+  end
+
+  def all_cards
+    hole_cards + community_cards
   end
 
   def three_of_a_rank?
