@@ -3,7 +3,7 @@ require 'rspec'
 
 RSpec.describe Player do
   it 'has version' do
-    expect(Player::VERSION).to eql 'Default Ruby folding player'
+    expect(Player::VERSION).to eql 'ali'
   end
 
   subject(:player) { Player.new(game_state) }
@@ -137,7 +137,7 @@ RSpec.describe Player do
       end
 
       it 'raises 100 more than minimum_possible_raise' do
-        expect(player.bet_request).to eql 393
+        expect(player.bet_request).to eql 349
       end
     end
 
@@ -156,7 +156,7 @@ RSpec.describe Player do
       end
 
       it 'raises 100 more than minimum_possible_raise' do
-        expect(player.bet_request.to_i).to eql 1042
+        expect(player.bet_request.to_i).to eql 393
       end
     end
 

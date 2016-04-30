@@ -2,7 +2,7 @@ require 'json'
 
 class Player
 
-  VERSION = "ali"
+  VERSION = 'ali'
 
   attr_reader :game_state
 
@@ -16,7 +16,7 @@ class Player
     return minimum_bet if going_for_flush?
     return 0 if one_of_the_players_is_too_sure?
     return 0 unless have_high?
-    minimum_bet + 1
+    minimum_bet
   end
 
   def showdown
@@ -63,19 +63,19 @@ class Player
 
   def rank_to_value
     {
-      'A' => 1,
-      'K' => 1,
-      'Q' => 1.5,
-      'J' => 1.7,
-      '10' => 2,
-      '9' => 2.5,
-      '8' => 3,
-      '7' => 4,
-      '6' => 10,
-      '5' => 10,
-      '4' => 10,
-      '3' => 10,
-      '2' => 10
+      'A' => 8,
+      'K' => 8,
+      'Q' => 9,
+      'J' => 10,
+      '10' => 11,
+      '9' => 12,
+      '8' => 14,
+      '7' => 15,
+      '6' => 15,
+      '5' => 15,
+      '4' => 15,
+      '3' => 15,
+      '2' => 15
     }
   end
 
