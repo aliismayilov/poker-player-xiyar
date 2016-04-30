@@ -199,7 +199,7 @@ RSpec.describe Player do
     end
   end
 
-  context 'has flush' do
+  context 'flush availability' do
     let(:hole_cards) do
       [
         {
@@ -212,25 +212,38 @@ RSpec.describe Player do
         }
       ]
     end
-    let(:community_cards) do
-      [
-        {
-          "rank": "4",
-          "suit": "clubs"
-        },
-        {
-          "rank": "A",
-          "suit": "clubs"
-        },
-        {
-          "rank": "6",
-          "suit": "clubs"
-        }
-      ]
+
+    context 'happened' do
+      let(:community_cards) do
+        [
+          {
+            "rank": "4",
+            "suit": "clubs"
+          },
+          {
+            "rank": "A",
+            "suit": "clubs"
+          },
+          {
+            "rank": "6",
+            "suit": "clubs"
+          }
+        ]
+      end
+
+      it 'raises 2000 more than the minimum_possible_raise' do
+        expect(player.bet_request).to eql 1590
+      end
     end
 
-    it 'raises 2000 more than the minimum_possible_raise' do
-      expect(player.bet_request).to eql 1590
+    context 'still chance' do
+      let(:community_cards) do
+        []
+      end
+
+      it 'raises 1 more than the minimum_possible_raise' do
+        expect(player.bet_request).to eql 262
+      end
     end
   end
 end
