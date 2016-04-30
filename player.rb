@@ -2,7 +2,7 @@ require 'json'
 
 class Player
 
-  VERSION = "Default Ruby folding player"
+  VERSION = "ali"
 
   attr_reader :game_state
 
