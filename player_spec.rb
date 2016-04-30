@@ -94,21 +94,42 @@ RSpec.describe Player do
   end
 
   context 'has pair' do
-    let(:hole_cards) do
-      [
-        {
-          "rank": "4",
-          "suit": "hearts"
-        },
-        {
-          "rank": "4",
-          "suit": "spades"
-        }
-      ]
+    context 'lower' do
+      let(:hole_cards) do
+        [
+          {
+            "rank": "4",
+            "suit": "hearts"
+          },
+          {
+            "rank": "4",
+            "suit": "spades"
+          }
+        ]
+      end
+
+      it 'raises 100 more than minimum_possible_raise' do
+        expect(player.bet_request).to eql 361
+      end
     end
 
-    it 'raises more than minimum_possible_raise' do
-      expect(player.bet_request).to eql 461
+    context 'higher' do
+      let(:hole_cards) do
+        [
+          {
+            "rank": "J",
+            "suit": "hearts"
+          },
+          {
+            "rank": "J",
+            "suit": "clubs"
+          }
+        ]
+      end
+
+      it 'raises 100 more than minimum_possible_raise' do
+        expect(player.bet_request).to eql 1261
+      end
     end
   end
 end
