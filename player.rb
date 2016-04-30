@@ -13,8 +13,8 @@ class Player
   def bet_request
     return all_in_bet if flush? || three_of_a_rank? || double_pair?
     return minimum_bet + available_for_raise / rank_to_value[ranks(hole_cards).first] if pair?
-    return 0 unless have_high?
     return 0 if one_of_the_players_is_too_sure?
+    return 0 unless have_high?
     minimum_bet + 1
   end
 
@@ -26,7 +26,7 @@ class Player
   def have_high?
     hole_cards
       .any? do |card|
-        ['A', 'K'].include?(card['rank'])
+        ['A', 'K', 'Q'].include?(card['rank'])
       end
   end
 
