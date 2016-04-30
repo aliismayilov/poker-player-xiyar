@@ -9,6 +9,18 @@ RSpec.describe Player do
   subject(:player) { Player.new(game_state) }
 
   let(:current_buy_in) { 100 }
+  let(:hole_cards) do
+    [
+      {
+        "rank": "6",
+        "suit": "hearts"
+      },
+      {
+        "rank": "K",
+        "suit": "spades"
+      }
+    ]
+  end
 
   let(:game_state) do
     {
@@ -39,16 +51,7 @@ RSpec.describe Player do
           "version": "Default random player",
           "stack": 1590,
           "bet": 80,
-          "hole_cards": [
-            {
-              "rank": "6",
-              "suit": "hearts"
-            },
-            {
-              "rank": "K",
-              "suit": "spades"
-            }
-          ]
+          "hole_cards": hole_cards
         },
         {
           "id": 2,
@@ -78,7 +81,7 @@ RSpec.describe Player do
 
   context 'opponent is not sure' do
     it do
-      expect(player.bet_request).to eql 261
+      expect(player.bet_request).to eql 262
     end
   end
 
@@ -87,6 +90,25 @@ RSpec.describe Player do
 
     it 'folds' do
       expect(player.bet_request).to eql 0
+    end
+  end
+
+  context 'has pair' do
+    let(:hole_cards) do
+      [
+        {
+          "rank": "4",
+          "suit": "hearts"
+        },
+        {
+          "rank": "4",
+          "suit": "spades"
+        }
+      ]
+    end
+
+    it 'raises more than minimum_possible_raise' do
+      expect(player.bet_request).to eql 461
     end
   end
 end
