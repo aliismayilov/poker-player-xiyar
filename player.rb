@@ -13,8 +13,8 @@ class Player
   def bet_request
     return all_in_bet if flush? || three_of_a_rank? || double_pair?
     return minimum_bet + available_for_raise / rank_to_value[ranks(hole_cards).first] if pair?
-    return call_player if going_for_flush?
     return 0 if one_of_the_players_is_too_sure?
+    return call_player if going_for_flush?
     return 0 unless have_high?
     call_player
   end
