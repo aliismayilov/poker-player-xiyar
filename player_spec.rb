@@ -83,7 +83,7 @@ RSpec.describe Player do
   end
 
   context 'opponent is too sure' do
-    let(:current_buy_in) { 400 }
+    let(:current_buy_in) { 1000 }
 
     it 'folds' do
       expect(player.bet_request).to eql 0

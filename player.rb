@@ -14,7 +14,7 @@ class Player
     return available_for_raise / 1 if three_of_a_rank?
     return minimum_bet + available_for_raise / 1 if double_pair?
     return minimum_bet + available_for_raise / rank_to_value[ranks(hole_cards).first] if pair?
-    return 0 if game_state['current_buy_in'] >= 400
+    return 0 if current_buy_in_is_too_sure?
     minimum_bet + 1
   end
 
@@ -22,6 +22,10 @@ class Player
   end
 
   private
+
+  def current_buy_in_is_too_sure?
+    my_stack / game_state['current_buy_in'] < 2.5
+  end
 
   def available_for_raise
     my_stack - minimum_bet
