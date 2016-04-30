@@ -242,7 +242,7 @@ RSpec.describe Player do
       end
 
       it 'raises 1 more than the minimum_possible_raise' do
-        expect(player.bet_request).to eql 262
+        expect(player.bet_request).to eql 261
       end
     end
   end

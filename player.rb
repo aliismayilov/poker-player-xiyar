@@ -13,7 +13,7 @@ class Player
   def bet_request
     return all_in_bet if flush? || three_of_a_rank? || double_pair?
     return minimum_bet + available_for_raise / rank_to_value[ranks(hole_cards).first] if pair?
-    return minimum_bet + 1 if going_for_flush?
+    return minimum_bet if going_for_flush?
     return 0 if one_of_the_players_is_too_sure?
     return 0 unless have_high?
     minimum_bet + 1
@@ -27,7 +27,7 @@ class Player
   def going_for_flush?
     hole_cards.map do |card|
       card['suit']
-    end.uniq.count == 1
+    end.uniq.count == 1 && community_cards.count < 4
   end
 
   def have_high?
