@@ -106,7 +106,7 @@ RSpec.describe Player do
       end
 
       it 'raises 100 more than minimum_possible_raise' do
-        expect(player.bet_request).to eql 361
+        expect(player.bet_request).to eql 393
       end
     end
 
@@ -125,7 +125,7 @@ RSpec.describe Player do
       end
 
       it 'raises 100 more than minimum_possible_raise' do
-        expect(player.bet_request).to eql 1261
+        expect(player.bet_request.to_i).to eql 1042
       end
     end
 
@@ -144,7 +144,7 @@ RSpec.describe Player do
       end
 
       it 'raises 1500 more than the minimum_possible_raise' do
-        expect(player.bet_request).to eql 1761
+        expect(player.bet_request).to eql 1590
       end
     end
   end
@@ -164,7 +164,7 @@ RSpec.describe Player do
     end
 
     it 'raises 2000 more than the minimum_possible_raise' do
-      expect(player.bet_request).to eql 2261
+      expect(player.bet_request).to eql 1329
     end
   end
 end

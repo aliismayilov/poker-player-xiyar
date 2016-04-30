@@ -11,9 +11,9 @@ class Player
   end
 
   def bet_request
-    return minimum_possible_raise + 2000 if three_of_a_rank?
-    return minimum_possible_raise + 1500 if double_pair?
-    return minimum_possible_raise + rank_to_value[ranks(hole_cards).first] if pair?
+    return available_for_raise / 1 if three_of_a_rank?
+    return minimum_possible_raise + available_for_raise / 1 if double_pair?
+    return minimum_possible_raise + available_for_raise / rank_to_value[ranks(hole_cards).first] if pair?
     return 0 if game_state['current_buy_in'] >= 400
     minimum_possible_raise + 1
   end
@@ -23,21 +23,25 @@ class Player
 
   private
 
+  def available_for_raise
+    my_stack - minimum_possible_raise
+  end
+
   def rank_to_value
     {
-      'A' => 3000,
-      'K' => 3000,
-      'Q' => 1500,
-      'J' => 1000,
-      '10' => 800,
-      '9' => 500,
-      '8' => 400,
-      '7' => 300,
-      '6' => 200,
-      '5' => 100,
-      '4' => 100,
-      '3' => 100,
-      '2' => 100
+      'A' => 1,
+      'K' => 1,
+      'Q' => 1.5,
+      'J' => 1.7,
+      '10' => 2,
+      '9' => 2.5,
+      '8' => 3,
+      '7' => 4,
+      '6' => 10,
+      '5' => 10,
+      '4' => 10,
+      '3' => 10,
+      '2' => 10
     }
   end
 
@@ -64,9 +68,7 @@ class Player
   end
 
   def hole_cards
-    game_state['players'].select do |player|
-      player['hole_cards']
-    end.first['hole_cards']
+    my_player['hole_cards']
   end
 
   def community_cards
@@ -78,5 +80,15 @@ class Player
     cards.map do |card|
       card['rank']
     end
+  end
+
+  def my_player
+    game_state['players'].select do |player|
+      player['hole_cards']
+    end.first
+  end
+
+  def my_stack
+    my_player['stack']
   end
 end
