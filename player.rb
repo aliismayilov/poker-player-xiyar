@@ -41,8 +41,11 @@ class Player
     }
   end
 
+  def all_ranks
+    ranks(hole_cards) + ranks(community_cards)
+  end
+
   def three_of_a_rank?
-    all_ranks = ranks(hole_cards) + ranks(community_cards)
     all_ranks.any? do |rank|
       all_ranks.count(rank) > 2
     end
@@ -53,7 +56,6 @@ class Player
   end
 
   def double_pair?
-    all_ranks = ranks(hole_cards) + ranks(community_cards)
     all_ranks.select { |e| all_ranks.count(e) > 1 }.uniq.count > 1
   end
 
